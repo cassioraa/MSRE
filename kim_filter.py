@@ -87,6 +87,15 @@ def kim_filter(mat, log_start = 0):
 
     fy_l_ij_c  = np.zeros((nStates,nStates,nObs,nMsrmntEqns))
     fy_l_ij_uc = np.zeros((nStates,nStates,nObs,nMsrmntEqns))
+    
+    b_l = np.zeros((nObs,lStatesVec,1))
+    P_l = np.zeros((1, nObs,lStatesVec, lStatesVec))
+    y_l = np.zeros((1, nObs,nMsrmntEqns))
+    eta_l = np.zeros((1, nObs,nMsrmntEqns))
+    f_l = np.zeros((1, nObs,nMsrmntEqns, nMsrmntEqns))
+
+    b_t = np.zeros((nObs,lStatesVec,1))
+    P_t = np.zeros((1, nObs,lStatesVec, lStatesVec))   
 
     #========================================================================#
     # Starting Values
@@ -223,5 +232,44 @@ def kim_filter(mat, log_start = 0):
         
             
             P_tt_j[j,t+1,:,:] =P_tt_j[j,t+1,:,:]/S_t_j[0,t+1,j]
+            
+        #=================================================================#
+        # Collecting output
+        #=================================================================#
+        
+        for i in range(nStates):
+            for j in range(nStates):
 
-    return logL
+                b_l[t,:]       = b_l[t,:] + b_tl_ij[i,j,t,:] * S_l_ij[0,t,i,j]
+                P_l[0,t,:,:]   = P_l[0,t,:,:] +  P_tl_ij[i,j,t,:,:] * S_l_ij[0,t,i,j]
+                y_l[0,t,:]     = y_l[0,t,:] + y_tl_ij[i,j,t,:] * S_l_ij[0,t,i,j]
+                eta_l[0,t,:]   = eta_l[0,t,:] + eta_tl_ij[i,j,t,:] * S_l_ij[0,t,i,j]
+                f_l[0,t,:,:]   = f_l[0,t,:,:] + f_tl_ij[i,j,t,:,:] * S_l_ij[0,t,i,j]
+
+                b_t[t,:]       = b_t[t,:] + b_tt_ij[i,j,t,:] * S_t_ij[0,t,i,j]
+                P_t[0,t,:,:]   = P_t[0,t,:,:] +  P_tt_ij[i,j,t,:,:] * S_t_ij[0,t,i,j]
+                
+        # TODO: Implement the smoothing
+        
+        #=================================================================#
+        # Fill output structure in a class
+        #=================================================================#
+        
+    class Results:
+
+        def __init__(self, logL, S_t_j, S_l_j, b_t, b_l, P_t, P_l, y_l, eta_l, f_l):
+            
+            self.logL  = logL
+            self.S_t_j = S_t_j[0,1:,:]
+            self.S_l_j = S_l_j[0,1:,:]
+            self.b_t   = b_t[:,:,0]
+            self.b_l   = b_l[:,:,0]
+            self.P_t   = P_t[0,:,:,:]
+            self.P_l   = P_l[0,:,:,:]
+            self.y_l   = y_l[0,:,:]
+            self.eta_l = eta_l[0,:,:]
+            self.f_l   = f_l[0,:,:,:]
+                
+    results = Results(logL, S_t_j, S_l_j, b_t, b_l, P_t, P_l, y_l, eta_l, f_l)
+                        
+    return results
