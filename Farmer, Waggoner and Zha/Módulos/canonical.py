@@ -1,3 +1,6 @@
+import numpy as np
+
+
 def canonical(para):
     
     r'''Description: This function takes a set of parameter and construct a system of 
@@ -7,25 +10,28 @@ def canonical(para):
     
     Input: An 1-dimensional array
     Output: A(s_t), B(s_t), \Psi(s_t), \Pi(s_t) and the transition matrix P of the states s_t'''   
-    
+     
+    ii=0
 
-    kappa  = [para[0], para[0]]
-    phiPI  = [para[1], para[2]]
-    phiX   = [para[3], para[4]]
-    psiB   = [para[5], para[6]]
-    psiG   = [para[7], para[7]]
-    psiR   = [para[8], para[8]]
-    psiPI  = [para[9], para[9]]
-    rho_g  = [para[10], para[10]]
-    rho_z  = [para[11], para[11]]
-    rho_mu = [para[12], para[12]]
-    sigM   = [para[13], para[13]]
-    sigF   = [para[14], para[14]]
-    sigG   = [para[15], para[15]]
-    sigZ   = [para[16], para[16]]
-    sigMU  = [para[17], para[17]]
-    p00    = para[18]
-    p11    = para[19]
+    kappa  = [para[ii], para[ii]];   ii=ii+1
+    phiPI  = [para[ii], para[ii+1]]; ii=ii+2
+    phiX   = [para[ii], para[ii+1]]; ii=ii+2
+    psiB   = [para[ii], para[ii+1]]; ii=ii+2
+    psiG   = [para[ii], para[ii]];   ii=ii+1
+    psiR   = [para[ii], para[ii]];   ii=ii+1
+    psiPI  = [para[ii], para[ii]];   ii=ii+1
+    rho_g  = [para[ii], para[ii]];   ii=ii+1
+    rho_z  = [para[ii], para[ii]];   ii=ii+1
+    rho_mu = [para[ii], para[ii]];   ii=ii+1
+
+    sigM   = [para[ii], para[ii+1]];   ii=ii+2
+    sigF   = [para[ii], para[ii+1]];   ii=ii+2
+    sigG   = para[ii];   ii=ii+1
+    sigZ   = para[ii];   ii=ii+1
+    sigMU  = para[ii];   ii=ii+1
+
+    p00    = para[ii]; ii=ii+1
+    p11    = para[ii]; ii=ii+1
 
 
     # == Calibrated parameters == #

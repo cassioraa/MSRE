@@ -1,3 +1,6 @@
+import numpy as np
+from fwz_msv_msre_singular import *
+
 def solve_msdsge(matCan):
     
     r'''Description: This function take an object containing the matrices of canonical form of a MS-DSGE
