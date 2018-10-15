@@ -1,3 +1,5 @@
+import numpy as np
+
 def fwz_msv_msre_singular(P, A, B, Psi, s, z, max_count, tol):
 
     r'''Description: This function implement the algorithm describe in Farmer, Waggoner and Zha (2011) `MINIMAL STATE VARIABLE SOLUTIONS TO
