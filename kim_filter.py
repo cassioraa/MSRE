@@ -2,11 +2,16 @@ import numpy as np
 
 """
 Author: Cássio Roberto de Andrade Alves
-Date: september 2019
+Date: september 2018
 This code is based on Kim and Nelson (1999) "State-space models with regime switching" 
 and very similar with the following matlab code:
 
 https://github.com/bjdonhauser/ssmwrs
+
+It is building for the following state-space representation:
+
+        y_t = H(s_t) \beta_t + A(s_t) z_t + e_t,             e_t   ~ N(0, R(s_t))   (measurment equation)
+        \beta_t = \mu(s_t) F(s_t) \beta_t + G(s_t) \nu_t     \nu_t ~ N(0, Q(s_t))   (state equation)
 
 """
 
